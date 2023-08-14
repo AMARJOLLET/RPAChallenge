@@ -1,7 +1,9 @@
 package utils;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class OutilsProjet extends Logging {
     Logger LOGGER = LoggerFactory.getLogger(className);
@@ -63,18 +66,26 @@ public class OutilsProjet extends Logging {
 
 
     public Map<String, WebElement> returnMapFormulaire(List<WebElement> listLibelle, List<WebElement> listInput) {
-        Map<String, WebElement> mapFormulaire = new HashMap<>();
-        for(int i = 0; i < listInput.size(); i++){
-            mapFormulaire.put(listLibelle.get(i).getText(), listInput.get(i));
-        }
-        return mapFormulaire;
+        return IntStream.range(0, listInput.size())
+                .boxed()
+                .parallel()
+                .collect(Collectors.toMap(
+                        (Integer i) -> listLibelle.get(i).getText(),
+                        listInput::get
+                ));
     }
 
     public void remplirFormulaire(WebDriverWait wait, WebDriver driver, Map<String, WebElement> map1, Map<String, String> map2) throws Throwable {
-        for (Map.Entry<String, WebElement> entry : map1.entrySet()) {
-            String keyStr = entry.getKey();
-            seleniumTools.sendKey(wait, driver, map1.get(keyStr), map2.get(keyStr));
-        }
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        map1.keySet().stream()
+                .parallel()
+                .forEach(k -> {
+                    WebElement we = map1.get(k);
+                    String string = map2.get(k);
+//                    js.executeScript("arguments[0].click;", we);
+//                    js.executeScript("arguments[0].value='';", we);
+                    js.executeScript("arguments[0].value=arguments[1];", we, string);
+                });
     }
 }
 

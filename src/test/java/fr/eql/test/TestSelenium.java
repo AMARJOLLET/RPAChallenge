@@ -39,7 +39,6 @@ public class TestSelenium extends AbstractTestSelenium {
             pageFormulaire.remplirFormulaire(wait, driver, mapFormulaire, listJdd.get(i));
             pageFormulaire.sudmit(wait, driver);
         }
-
         Thread.sleep(10000);
 
         LOGGER.info("FIN DU TEST");

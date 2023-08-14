@@ -1,9 +1,11 @@
 package fr.eql.pageObject;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -40,7 +42,9 @@ public class PageFormulaire extends AbstractBlockPage{
         outilsProjet.remplirFormulaire(wait, driver, map1, map2);
     }
 
-    public void sudmit(WebDriverWait wait, WebDriver driver) throws Throwable {
-        seleniumTools.clickOnElement(wait, driver, submitButton);
+    public void sudmit(WebDriverWait wait, WebDriver driver) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        wait.until(ExpectedConditions.elementToBeClickable(submitButton));
+        js.executeScript("arguments[0].click();", submitButton);
     }
 }

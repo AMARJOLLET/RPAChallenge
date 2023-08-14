@@ -28,7 +28,7 @@ public class AbstractTestSelenium extends Logging {
     protected int explicitWaitingTime = 10;
 
     //
-    String navigateur = "chrome";
+    String navigateur = "firefox";
 
     @BeforeEach
     void startup() {

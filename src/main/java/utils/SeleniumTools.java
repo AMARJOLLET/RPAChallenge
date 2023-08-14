@@ -58,8 +58,6 @@ public class SeleniumTools extends Logging {
 
     public void sendKey(WebDriverWait wait, WebDriver driver, WebElement we, String string) throws Throwable {
         try {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("arguments[0].setAttribute('style', 'border:2px solid red; background:yellow')", we);
             wait.until(ExpectedConditions.elementToBeClickable(we));
             we.click();
             we.clear();
