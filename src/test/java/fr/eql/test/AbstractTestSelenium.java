@@ -1,17 +1,18 @@
 package fr.eql.test;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.Logging;
 import utils.OutilsProjet;
 import utils.SeleniumTools;
+
 import java.time.Duration;
 
 
@@ -36,23 +37,10 @@ public class AbstractTestSelenium extends Logging {
         System.setProperty("logFileName", this.className);
         LOGGER.info("Setup LOGGER effectué");
 
-        LOGGER.info("Setup Choix driver " + navigateur + " ...");
-
-        switch (navigateur.toLowerCase()) {
-            case "firefox" :
-                System.setProperty("webdriver.gecko.driver", "src/main/resources/driver/geckodriver.exe");
-                driver = new FirefoxDriver();
-                break;
-            case "chrome" :
-                System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
-                driver = new ChromeDriver();
-                break;
-            case "edge" :
-                System.setProperty("webdriver.edge.driver", "src/main/resources/driver/msedgedriver.exe");
-                driver = new EdgeDriver();
-                break;
-        }
-        LOGGER.info("Setup Choix driver " + navigateur + " effectué");
+        WebDriverManager.firefoxdriver().setup();
+        FirefoxOptions options = new FirefoxOptions();
+        options.setHeadless(true);
+        driver = new FirefoxDriver(options);
 
         LOGGER.info("Setup wait et driver ...");
         driver.manage().window().maximize();
@@ -65,7 +53,7 @@ public class AbstractTestSelenium extends Logging {
 
 
     @AfterEach
-    void tearDown() throws InterruptedException {
+    void tearDown() {
         LOGGER.info("Arret du driver ...");
         driver.quit();
         LOGGER.info("Arret du driver effectué");

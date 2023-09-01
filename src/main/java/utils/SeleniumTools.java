@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class SeleniumTools extends Logging {
         this.className = className;
     }
 
-    public static void takeSnapShot(WebDriver webdriver, String fileWithPath) throws Exception {
+    public static void takeSnapShot(WebDriver webdriver, String fileWithPath) throws IOException {
         TakesScreenshot scrShot = ((TakesScreenshot) webdriver);
         File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
         File DestFile = new File(fileWithPath);
@@ -34,15 +35,9 @@ public class SeleniumTools extends Logging {
         throw error;
     }
 
-    public void clickOnElement(WebDriverWait wait, WebDriver driver, WebElement we) throws Throwable {
-        try {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("arguments[0].setAttribute('style', 'border:2px solid red; background:yellow')", we);
-            wait.until(ExpectedConditions.elementToBeClickable(we));
-            we.click();
-        } catch (Throwable e) {
-            snapshot(className, driver, e);
-        }
+    public void clickOnElement(WebDriverWait wait, WebElement we) {
+        wait.until(ExpectedConditions.elementToBeClickable(we));
+        we.click();
     }
 
     public void scrollToElement(WebDriverWait wait, WebDriver driver, WebElement we) throws Throwable {

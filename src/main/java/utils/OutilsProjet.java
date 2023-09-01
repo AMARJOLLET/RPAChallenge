@@ -75,7 +75,7 @@ public class OutilsProjet extends Logging {
                 ));
     }
 
-    public void remplirFormulaire(WebDriverWait wait, WebDriver driver, Map<String, WebElement> map1, Map<String, String> map2) throws Throwable {
+    public void remplirFormulaire(WebDriverWait wait, WebDriver driver, Map<String, WebElement> map1, Map<String, String> map2) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         map1.keySet().stream()
                 .parallel()

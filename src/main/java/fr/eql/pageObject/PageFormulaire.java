@@ -29,8 +29,9 @@ public class PageFormulaire extends AbstractBlockPage{
     @FindBy(xpath = "//input[@value=\"Submit\"]")
     WebElement submitButton;
 
-    public void letsGo (WebDriverWait wait, WebDriver driver) throws Throwable {
-        seleniumTools.clickOnElement(wait, driver, start);
+
+    public void letsGo (WebDriverWait wait) {
+        seleniumTools.clickOnElement(wait, start);
     }
 
 
